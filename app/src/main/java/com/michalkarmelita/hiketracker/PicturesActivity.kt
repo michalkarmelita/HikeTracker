@@ -22,15 +22,17 @@ class PicturesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        serviceIntent = Intent(this, PictureFeedService::class.java)
-        startService(serviceIntent)
     }
 
     override fun onStart() {
         super.onStart()
         // Bind to LocalService
+        serviceIntent = Intent(this, PictureFeedService::class.java)
+        startService(serviceIntent)
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE)
     }
+
+
 
     override fun onPostResume() {
         super.onPostResume()

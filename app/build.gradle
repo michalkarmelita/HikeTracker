@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -14,11 +13,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_URL", "\"https://api.flickr.com/\""
+        buildConfigField "String", "API_KEY", '"9672eadd3b0d68b5b2ca0f4394eae394"'
+        buildConfigField "String", "API_SECRET", '"97b13a16322b4479"'
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
 }
@@ -26,6 +30,8 @@ android {
 ext {
     rxjavaVersion = '2.1.1'
     supportLibVersion = '26.0.0-beta2'
+    okHttpVersion = '3.4.1'
+    retrofitVersion = '2.2.0'
 }
 
 dependencies {
@@ -35,6 +41,21 @@ dependencies {
     })
     implementation "com.android.support:design:$supportLibVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.0.3'
+
+    def dagger = "2.10"
+        kapt "com.google.dagger:dagger-compiler:$dagger"
+        compile "com.google.dagger:dagger:$dagger"
+
+        //Network
+  compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
+  compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+  compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
     implementation 'com.patloew.rxlocation:rxlocation:1.0.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.0.0-beta2'
