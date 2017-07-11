@@ -1,7 +1,7 @@
-package com.michalkarmelita.hiketracker.picturefeed.dagger
+package com.michalkarmelita.hiketracker.photosfeed.dagger
 
-import com.michalkarmelita.hiketracker.picturefeed.PictureFeedService
-import com.michalkarmelita.hiketracker.picturefeed.dagger.modules.LocationModule
+import com.michalkarmelita.hiketracker.photosfeed.PictureFeedService
+import com.michalkarmelita.hiketracker.photosfeed.dagger.modules.LocationModule
 import com.michalkarmelita.hiketracker.common.dagger.modules.NetworkModule
 import dagger.Subcomponent
 

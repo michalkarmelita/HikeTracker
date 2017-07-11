@@ -2,7 +2,7 @@ package com.michalkarmelita.hiketracker.common.dagger.modules
 
 import com.michalkarmelita.busarrivals.network.interceptors.RequestInterceptor
 import com.michalkarmelita.hiketracker.BuildConfig
-import com.michalkarmelita.hiketracker.picturefeed.model.ApiService
+import com.michalkarmelita.hiketracker.photosfeed.model.ApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

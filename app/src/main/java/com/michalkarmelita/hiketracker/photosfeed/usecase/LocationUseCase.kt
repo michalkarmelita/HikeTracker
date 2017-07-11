@@ -1,4 +1,4 @@
-package com.michalkarmelita.hiketracker.picturefeed.usecase
+package com.michalkarmelita.hiketracker.photosfeed.usecase
 
 import android.annotation.SuppressLint
 import android.location.Location

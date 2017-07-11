@@ -1,4 +1,4 @@
-package com.michalkarmelita.hiketracker.picturefeed
+package com.michalkarmelita.hiketracker.photosfeed
 
 import android.app.Service
 import android.content.Intent
@@ -6,12 +6,14 @@ import android.location.Location
 import android.os.Binder
 import android.os.IBinder
 import com.michalkarmelita.hiketracker.common.App
-import com.michalkarmelita.hiketracker.picturefeed.dagger.modules.LocationModule
-import com.michalkarmelita.hiketracker.picturefeed.usecase.GetPictureUseCase
-import com.michalkarmelita.hiketracker.picturefeed.usecase.LocationUseCase
+import com.michalkarmelita.hiketracker.common.Model.PhotoData
+import com.michalkarmelita.hiketracker.photosfeed.dagger.modules.LocationModule
+import com.michalkarmelita.hiketracker.photosfeed.usecase.GetPhotoDataUseCase
+import com.michalkarmelita.hiketracker.photosfeed.usecase.LocationUseCase
+import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.ReplaySubject
 import javax.inject.Inject
 
@@ -30,13 +32,13 @@ class PictureFeedService : Service() {
 
     // Binder given to clients
     private val mBinder = LocalBinder()
+    private var resultsSubject: ReplaySubject<PhotoData> = ReplaySubject.create()
+    private val runningSubject = PublishSubject.create<Boolean>()
 
     @Inject
     lateinit var locationUseCase: LocationUseCase
     @Inject
-    lateinit var getPictureUseCase: GetPictureUseCase
-
-    lateinit var disposable: Disposable
+    lateinit var getPictureUseCase: GetPhotoDataUseCase
 
     override fun onCreate() {
         super.onCreate()
@@ -54,7 +56,7 @@ class PictureFeedService : Service() {
     }
 
     override fun onDestroy() {
-        disposable.dispose()
+        resultsSubject.onComplete()
         super.onDestroy()
     }
 
@@ -62,13 +64,12 @@ class PictureFeedService : Service() {
         return mBinder
     }
 
-    private lateinit var resultsSubject: ReplaySubject<String>
-
     /** method for clients  */
     fun startTracking() {
-        resultsSubject = ReplaySubject.create()
+        runningSubject.onNext(true)
         locationUseCase
                 .getLocationUpdatesObservable()
+                .compose(active())
                 .switchMap { location: Location ->
                     getPictureUseCase.getPictures(location)
                             .subscribeOn(Schedulers.io())
@@ -80,7 +81,12 @@ class PictureFeedService : Service() {
     fun getResultsObservable() = resultsSubject
 
     fun stopTracking() {
-        resultsSubject.onComplete();
-        disposable.dispose()
+        runningSubject.onNext(false)
+    }
+
+    fun <R> active(): ObservableTransformer<R, R> {
+        return ObservableTransformer { upstream ->
+            upstream.takeUntil(runningSubject.filter { v -> !v })
+        }
     }
 }

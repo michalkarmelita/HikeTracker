@@ -1,6 +1,6 @@
-package com.michalkarmelita.hiketracker.picturefeed.model
+package com.michalkarmelita.hiketracker.photosfeed.model
 
-import com.michalkarmelita.hiketracker.picturefeed.model.apimodel.ProtosResponse
+import com.michalkarmelita.hiketracker.photosfeed.model.apimodel.ProtosResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

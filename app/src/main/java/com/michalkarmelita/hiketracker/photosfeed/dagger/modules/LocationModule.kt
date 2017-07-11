@@ -1,4 +1,4 @@
-package com.michalkarmelita.hiketracker.picturefeed.dagger.modules
+package com.michalkarmelita.hiketracker.photosfeed.dagger.modules
 
 import android.content.Context
 import com.google.android.gms.location.LocationRequest

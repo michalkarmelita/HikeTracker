@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.NotificationCompat
+import com.michalkarmelita.hiketracker.photoslist.PhotosActivity
 
 /**
  * Created by MK on 10/07/2017.
@@ -18,7 +19,7 @@ fun Activity.showNotification(notificationId: Int) {
             .setContentText("Something interesting happened")
             .setOngoing(true)
 
-    val targetIntent = Intent(this, PicturesActivity::class.java)
+    val targetIntent = Intent(this, PhotosActivity::class.java)
     val contentIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     builder.setContentIntent(contentIntent)
     val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
