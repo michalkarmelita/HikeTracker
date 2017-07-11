@@ -29,7 +29,8 @@ class PhotosActivity : AppCompatActivity(), PhotosListView {
     val NOTIFICATION_ID = 12345
     lateinit var serviceIntent: Intent
     lateinit var service: PictureFeedService
-    var bound = false
+    private var bound = false
+    private var isSelected: Boolean = false
 
     @Inject
     lateinit var presenter: PhotosPresenter
@@ -97,12 +98,14 @@ class PhotosActivity : AppCompatActivity(), PhotosListView {
     /** Called when a button is clicked (the button in the layout file attaches to
      * this method with the android:onClick attribute)  */
     fun onButtonClick(v: View) {
-        if (!v.isSelected) {
+        if (!isSelected) {
             service.startTracking()
-            v.isSelected = true
+            fab.setImageResource(R.drawable.ic_stop)
+            isSelected = true
         } else {
             service.stopTracking()
-            v.isSelected = false
+            fab.setImageResource(R.drawable.ic_play)
+            isSelected = false
         }
     }
 
